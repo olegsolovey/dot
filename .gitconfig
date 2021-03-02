@@ -1,0 +1,19 @@
+[credential]
+	helper = store --file ~/.git-credentials
+[user]
+	email = osolovey@snapchat.com
+	name = Oleg Solovey
+[diff]
+	tool = vimdiff
+[merge]
+	tool = vimdiff
+[mergetool]
+	keepBackup = false
+[status]
+	submoduleSummary = true
+#[url "https://github.sc-corp.net/"]
+#	insteadOf = git@github.sc-corp.net:
+[pull]
+	ff = only
+[url "git@github.sc-corp.net:"]
+	insteadOf = https://github.sc-corp.net/
