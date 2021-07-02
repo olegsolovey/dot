@@ -1,8 +1,9 @@
 [credential]
-	helper = store --file ~/.git-credentials
+	helper = store --file=/Users/osolovey/.git-credentials
 [user]
 	email = osolovey@snapchat.com
 	name = Oleg Solovey
+	signingkey = B5B5E626E17BBD110F89F568D9EC2AA4796A8ED9
 [diff]
 	tool = vimdiff
 [merge]
@@ -17,3 +18,34 @@
 	ff = only
 [url "git@github.sc-corp.net:"]
 	insteadOf = https://github.sc-corp.net/
+[fetch]
+	prune = true
+[gpg]
+	program = /usr/local/bin/gpg
+[core]
+	excludesFile = ~/.gitignore
+[alias]
+	b = branch
+	ca = commit --amend
+	ch = checkout
+	cm = commit -m
+	d = diff
+	dv = difftool -t vimdiff -y
+	f = "!f() { \
+           git fetch $1 $2:$2; \
+         }; f"
+	gl = config --global -l
+	ll = log --oneline
+	last = log -1 HEAD --stat
+	llga = log --oneline --graph --all
+	p = push
+	pd = push -u origin HEAD
+	pdf = push -u origin HEAD --force
+	pf = push --force
+	rsba = "!f() { \
+              git remote set-branches --add $1 $2; \
+            }; f"
+	rv = remote -v
+	st = status -sb
+[commit]
+	gpgsign = true

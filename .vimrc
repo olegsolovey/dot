@@ -134,6 +134,7 @@ let NERDTreeWinPos = "right"
 let NERDSpaceDelims=1
 " nmap <D-/> :NERDComToggleComment<cr>
 let NERDCompactSexyComs=1
+let NERDTreeShowHidden=1
 
 " powerline
 "let g:Powerline_symbols = 'fancy'
