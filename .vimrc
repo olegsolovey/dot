@@ -4,10 +4,10 @@ source ~/.vim/vundles.vim
 set fileencodings=utf-8,gb2312,gb18030,gbk,ucs-bom,cp936,latin1
 
 " add cpp tags
-set tags+=~/.vim/cpp_tags
+" set tags+=~/.vim/cpp_tags
 
 " enable filetype dectection and ft specific plugin/indent
-filetype plugin indent on
+"filetype plugin indent on
 
 " enable syntax hightlight and completion
 syntax on
@@ -22,6 +22,8 @@ colorscheme molokai
 au WinLeave * set nocursorline nocursorcolumn
 au WinEnter * set cursorline cursorcolumn
 set cursorline cursorcolumn
+
+set colorcolumn=80
 
 " search
 set incsearch
@@ -50,12 +52,12 @@ set matchtime=2                                                   " show matchin
 set directory=~/.vim/tmp                                          " move swp file to /tmp
 
 " Default Indentation
-"set autoindent
-"set expandtab       " expand tab to space
-"set smartindent     " indent when
-set tabstop=4       " tab width
-set softtabstop=4   " backspace
-set shiftwidth=4    " indent width
+set autoindent
+set expandtab       " expand tab to space
+set smartindent     " indent when
+set tabstop=2       " tab width
+set softtabstop=2   " backspace
+set shiftwidth=2    " indent width
 " set textwidth=79
 " set smarttab      " insert tabs on the start of a line according to shiftwidth, not tabstop
 
@@ -140,28 +142,28 @@ let NERDTreeShowHidden=1
 "let g:Powerline_symbols = 'fancy'
 
 " NeoComplCache
-let g:neocomplcache_enable_at_startup=1
-let g:neoComplcache_disableautocomplete=1
+" let g:neocomplcache_enable_at_startup=1
+" let g:neoComplcache_disableautocomplete=1
 "let g:neocomplcache_enable_underbar_completion = 1
 "let g:neocomplcache_enable_camel_case_completion = 1
-let g:neocomplcache_enable_smart_case=1
-let g:neocomplcache_min_syntax_length = 3
-let g:neocomplcache_lock_buffer_name_pattern = '\*ku\*'
-set completeopt-=preview
+" let g:neocomplcache_enable_smart_case=1
+" let g:neocomplcache_min_syntax_length = 3
+" let g:neocomplcache_lock_buffer_name_pattern = '\*ku\*'
+" set completeopt-=preview
 
-imap <C-k> <Plug>(neocomplcache_snippets_force_expand)
-smap <C-k> <Plug>(neocomplcache_snippets_force_expand)
-imap <C-l> <Plug>(neocomplcache_snippets_force_jump)
-smap <C-l> <Plug>(neocomplcache_snippets_force_jump)
+"imap <C-k> <Plug>(neocomplcache_snippets_force_expand)
+"smap <C-k> <Plug>(neocomplcache_snippets_force_expand)
+"imap <C-l> <Plug>(neocomplcache_snippets_force_jump)
+"smap <C-l> <Plug>(neocomplcache_snippets_force_jump)
 
 " Enable omni completion.
-autocmd FileType markdown setlocal omnifunc=htmlcomplete#CompleteTags
-autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
-autocmd FileType c setlocal omnifunc=ccomplete#Complete
-if !exists('g:neocomplcache_omni_patterns')
-  let g:neocomplcache_omni_patterns = {}
-endif
-let g:neocomplcache_omni_patterns.erlang = '[a-zA-Z]\|:'
+" autocmd FileType markdown setlocal omnifunc=htmlcomplete#CompleteTags
+" autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+" autocmd FileType c setlocal omnifunc=ccomplete#Complete
+" if !exists('g:neocomplcache_omni_patterns')
+"   let g:neocomplcache_omni_patterns = {}
+" endif
+" let g:neocomplcache_omni_patterns.erlang = '[a-zA-Z]\|:'
 
 " SuperTab
 " let g:SuperTabDefultCompletionType='context'
@@ -222,15 +224,15 @@ nnoremap ; :
 ":command QA qa
 
 " In insert or command mode, move normally by using Ctrl
-inoremap <C-h> <Left>
-inoremap <C-j> <Down>
-inoremap <C-k> <Up>
-inoremap <C-l> <Right>
-cnoremap <C-h> <Left>
-cnoremap <C-j> <Down>
-cnoremap <C-k> <Up>
-cnoremap <C-l> <Right>
-
+" inoremap <C-h> <Left>
+" inoremap <C-j> <Down>
+" inoremap <C-k> <Up>
+" inoremap <C-l> <Right>
+" cnoremap <C-h> <Left>
+" cnoremap <C-j> <Down>
+" cnoremap <C-k> <Up>
+" cnoremap <C-l> <Right>
+" 
 " for macvim
 "if has("gui_running")
 "    "set go=aAce  " remove toolbar
@@ -262,3 +264,12 @@ cnoremap <C-l> <Right>
 "    "map <D-9> 9gt
 "    "map <D-0> :tablast<CR>
 "endif
+
+set listchars=eol:¬,space:·,tab:-▸,trail:·
+"set listchars=tab:!·,trail:·
+set list
+
+" vimdiff diffget
+map <Leader>1 :diffget LOCAL<CR>
+map <Leader>2 :diffget BASE<CR>
+map <Leader>3 :diffget REMOTE<CR>

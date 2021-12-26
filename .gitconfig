@@ -1,5 +1,5 @@
 [credential]
-	helper = store --file=/Users/osolovey/.git-credentials
+	helper = store --file=/home/osolovey/.git-credentials
 [user]
 	email = osolovey@snapchat.com
 	name = Oleg Solovey
@@ -12,16 +12,16 @@
 	keepBackup = false
 [status]
 	submoduleSummary = true
-#[url "https://github.sc-corp.net/"]
-#	insteadOf = git@github.sc-corp.net:
+[url "https://github.sc-corp.net/"]
+	insteadOf = git@github.sc-corp.net:
 [pull]
 	ff = only
-[url "git@github.sc-corp.net:"]
-	insteadOf = https://github.sc-corp.net/
+#[url "git@github.sc-corp.net:"]
+#	insteadOf = https://github.sc-corp.net/
 [fetch]
 	prune = true
-[gpg]
-	program = /usr/local/bin/gpg
+#[gpg]
+#	program = /usr/local/bin/gpg
 [core]
 	excludesFile = ~/.gitignore
 [alias]
@@ -47,5 +47,5 @@
             }; f"
 	rv = remote -v
 	st = status -sb
-[commit]
-	gpgsign = true
+#[commit]
+#	gpgsign = true
