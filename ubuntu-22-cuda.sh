@@ -1,4 +1,5 @@
 #!/bin/bash
+set -x
 
 # Invoke without cloning:
 # curl -fsSL https://raw.githubusercontent.com/olegsolovey/dot/master/ubuntu-22-cuda.sh | bash -s -- -s <sc-corp-token> -g <github-token> -p <password>
@@ -35,7 +36,7 @@ sudo apt-get install -y \
   apt-transport-https \
   ca-certificates \
   bash-completion \
-  python3.12-venv \
+  python3-venv \
   python-is-python3 \
   git \
   nvtop \
@@ -94,5 +95,5 @@ curl -fsSL https://get.docker.com -o get-docker.sh && \
 sh get-docker.sh
 sudo usermod -aG docker ${USER}
 echo "${USER}:${USER_PASS}" | sudo chpasswd
-gcloud auth configure-docker
+gcloud auth configure-docker --quiet
 echo "Done. Log out and back in for docker group to take effect."
