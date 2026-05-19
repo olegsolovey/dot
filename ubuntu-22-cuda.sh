@@ -1,4 +1,5 @@
 #!/bin/bash
+set -x
 
 # Invoke without cloning:
 # curl -fsSL https://raw.githubusercontent.com/olegsolovey/dot/master/ubuntu-22-cuda.sh | bash -s -- -s <sc-corp-token> -g <github-token> -p <password>
@@ -35,7 +36,7 @@ sudo apt-get install -y \
   apt-transport-https \
   ca-certificates \
   bash-completion \
-  python3.12-venv \
+  python3-venv \
   python-is-python3 \
   git \
   nvtop \
