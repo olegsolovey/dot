@@ -3,7 +3,7 @@
 [user]
 	email = osolovey@snapchat.com
 	name = Oleg Solovey
-	signingkey = B5B5E626E17BBD110F89F568D9EC2AA4796A8ED9
+  #signingkey = MYKEY
 [diff]
 	tool = vimdiff
 [merge]
