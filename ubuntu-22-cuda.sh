@@ -39,6 +39,7 @@ sudo apt-get install -y \
   python-is-python3 \
   git \
   nvtop \
+  rsync \
   unzip \
   vim \
   tmux \
@@ -57,7 +58,7 @@ git config --global credential.helper "store --file=$HOME/.git-credentials"
 #
 # dot
 git clone https://github.com/olegsolovey/dot.git && \
-cp dot/.bashrc dot/.gitconfig dot/.tmux.conf ~/ &&
+rsync -a --exclude='.git' dot/ ~/ && \
 rm -rf dot && \
 #
 # vimrc
@@ -93,5 +94,5 @@ curl -fsSL https://get.docker.com -o get-docker.sh && \
 sh get-docker.sh
 sudo usermod -aG docker ${USER}
 echo "${USER}:${USER_PASS}" | sudo chpasswd
-su - ${USER}
 gcloud auth configure-docker
+echo "Done. Log out and back in for docker group to take effect."
