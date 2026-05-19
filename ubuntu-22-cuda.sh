@@ -95,5 +95,5 @@ curl -fsSL https://get.docker.com -o get-docker.sh && \
 sh get-docker.sh
 sudo usermod -aG docker ${USER}
 echo "${USER}:${USER_PASS}" | sudo chpasswd
-gcloud auth configure-docker
+gcloud auth configure-docker --quiet
 echo "Done. Log out and back in for docker group to take effect."
