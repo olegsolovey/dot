@@ -2,10 +2,10 @@
 set -x
 
 # Invoke without cloning:
-# curl -fsSL https://raw.githubusercontent.com/olegsolovey/dot/master/ubuntu-22.sh | bash -s -- -g <github-token> -p <password>
+# curl -fsSL https://raw.githubusercontent.com/olegsolovey/dot/master/ubuntu-22.sh | bash -s -- -g <github-token>
 
 usage() {
-  echo "Usage: $0 -s <sc-corp-token> -g <github-token>"
+  echo "Usage: $0 -g <github-token>"
   echo "  -g  Git token for github.com"
   exit 1
 }
@@ -36,6 +36,8 @@ git clone https://github.com/olegsolovey/dot.git && \
 rsync -a --exclude='.git' dot/ ~/ && \
 rm -rf dot && \
 #
+git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+~/.tmux/plugins/tpm/bin/install_plugins
 # vimrc
 wget -O - https://raw.githubusercontent.com/olegsolovey/vimrc/master/install.sh | bash && \
 
