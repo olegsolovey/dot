@@ -18,6 +18,8 @@
 	ff = only
 #[url "git@github.sc-corp.net:"]
 #	insteadOf = https://github.sc-corp.net/
+[url "git@github.com:xai-org/"]
+	insteadOf = https://github.com/xai-org/
 [fetch]
 	prune = true
 #[gpg]
