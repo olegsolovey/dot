@@ -1,4 +1,4 @@
-#!/bin/bash
+
 set -x
 
 # Invoke without cloning:
@@ -42,3 +42,10 @@ git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 wget -O - https://raw.githubusercontent.com/olegsolovey/vimrc/master/install.sh | bash && \
 
 source ~/.bashrc
+
+if [[ -n "$TMUX" ]]; then
+  tmux source-file ~/.tmux.conf
+fi
+
+git clone git@github.com:xai-org/xai.git --single-branch --branch main --recursive ~/workspace/xai
+
