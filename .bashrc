@@ -140,6 +140,8 @@ alias cr='clear && reset'
 alias gp="g add . && g cm 'tmp' && g pdf"
 alias sdr="gsutil cat gs://dependency-registry-setup/general/latest/setup.sh | bash"
 alias cdi="cd x/osolovey/recsys-inference"
+alias k1="kill -9 %1"
+alias ixai="uv sync --active --frozen --inexact --directory xlm2 --group recsys-inference --group local --group recsys --extra cuda"
 
 export EDITOR=vim
 
