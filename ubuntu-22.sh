@@ -33,7 +33,7 @@ git config --global credential.helper "store --file=$HOME/.git-credentials"
 #
 # dot
 git clone https://github.com/olegsolovey/dot.git && \
-rsync -a --exclude='.git' dot/ ~/ && \
+rsync -a --exclude='.git' --exclude='.git-credentials' dot/ ~/ && \
 rm -rf dot && \
 #
 git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
