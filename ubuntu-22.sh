@@ -40,7 +40,21 @@ rm -rf dot && \
 git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 ~/.tmux/plugins/tpm/bin/install_plugins
 # vimrc
-wget -O - https://raw.githubusercontent.com/olegsolovey/vimrc/master/install.sh | bash && \
+# The vim config lives in ~/.vim (copied from this repo by the rsync above).
+# compile vim with python3 support
+git clone https://github.com/vim/vim.git
+cd vim/src
+sed -i '/CONF_OPT_PYTHON3 = --enable-python3interp=dynamic/s/^#//g' Makefile
+make
+sudo make install
+cd ../../
+rm -rf vim
+# wire up the config
+ln -sf ~/.vim/vimrc ~/.vimrc
+mkdir -p ~/.vim/tmp
+# setup Vundle and install plugins
+git clone https://github.com/VundleVim/Vundle.vim ~/.vim/bundle/Vundle.vim
+vim -c 'PluginInstall' -c 'qa!'
 
 source ~/.bashrc
 
