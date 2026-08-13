@@ -12,6 +12,15 @@ Plugin 'gmarik/vundle'
 " Plugin 'Shougo/neocomplcache'
 " Plugin 'Raimondi/delimitMate'
 " Plugin 'ervandew/supertab'
+"
+" Code Format https://github.com/google/vim-codefmt
+" Add maktaba and codefmt to the runtimepath.
+" (The latter must be installed before it can be used.)
+Plugin 'google/vim-maktaba'
+Plugin 'google/vim-codefmt'
+" Also add Glaive, which is used to configure codefmt's maktaba flags. See
+" `:help :Glaive` for usage.
+Plugin 'google/vim-glaive'
 
 " snippets
 "Plugin 'garbas/vim-snipmate'
@@ -37,10 +46,11 @@ Plugin 'scrooloose/nerdtree'
 Plugin 'majutsushi/tagbar'
 Plugin 'mileszs/ack.vim'
 Plugin 'kien/ctrlp.vim'
-Plugin 'tpope/vim-fugitive'
+"Plugin 'tpope/vim-fugitive'
 Plugin 'Lokaltog/vim-powerline'
 Plugin 'scrooloose/syntastic'
 Plugin 'bronson/vim-trailing-whitespace'
+"Plugin 'ycm-core/YouCompleteMe'
 
 " Other Utils
 " Plugin 'humiaozuzu/fcitx-status'
@@ -65,3 +75,10 @@ Plugin 'tomasr/molokai'
 Plugin 'chriskempson/vim-tomorrow-theme'
 
 filetype plugin indent on     " required!
+
+call vundle#end()
+" the glaive#Install() should go after the "call vundle#end()"
+call glaive#Install()
+" Optional: Enable codefmt's default mappings on the <Leader>= prefix.
+Glaive codefmt plugin[mappings]
+Glaive codefmt google_java_executable="java -jar /path/to/google-java-format-VERSION-all-deps.jar"
