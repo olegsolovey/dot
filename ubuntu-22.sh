@@ -62,5 +62,9 @@ if [[ -n "$TMUX" ]]; then
   tmux source-file ~/.tmux.conf
 fi
 
+rm -rf ~/.rustup/downloads ~/.rustup/tmp
+rustup toolchain install 1.94.0
+rustup component add clippy rustfmt --toolchain 1.94.0
+
 git clone git@github.com:xai-org/xai.git --single-branch --branch main --recursive ~/workspace/xai
 
