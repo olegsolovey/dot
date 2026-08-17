@@ -54,7 +54,8 @@ ln -sf ~/.vim/vimrc ~/.vimrc
 mkdir -p ~/.vim/tmp
 # setup Vundle and install plugins
 git clone https://github.com/VundleVim/Vundle.vim ~/.vim/bundle/Vundle.vim
-vim -c 'PluginInstall' -c 'qa!'
+# silent ex mode: no terminal needed, no "Press ENTER" prompts
+vim -es -u ~/.vimrc -c 'PluginInstall' -c 'qa!' < /dev/null || true
 
 source ~/.bashrc
 
