@@ -1,6 +1,9 @@
 source ~/.vim/vundles.vim
 
 " encoding dectection
+" force utf-8 regardless of locale (multi-byte listchars below need it)
+set encoding=utf-8
+scriptencoding utf-8
 set fileencodings=utf-8,gb2312,gb18030,gbk,ucs-bom,cp936,latin1
 
 " add cpp tags
@@ -20,7 +23,8 @@ syntax on
 "--------
 " color scheme
 set background=dark
-colorscheme molokai
+" molokai is installed by Vundle; skip silently until :PluginInstall has run
+silent! colorscheme molokai
 " colorscheme blue
 
 " highlight current line
