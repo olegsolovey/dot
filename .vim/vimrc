@@ -19,13 +19,35 @@ set noundofile
 " enable syntax hightlight and completion
 syntax on
 
+" Molokai leaves Comment as term=bold + a dark gray. iTerm2's "bold =
+" bright" mapping then paints comments as bright-black, so ctermfg/guifg
+" never look near-white. Clear bold and force white on every load.
+function! s:MolokaiReadableComments() abort
+  highlight! Comment        term=NONE cterm=NONE gui=NONE ctermfg=249 ctermbg=NONE guifg=#B0B8BA guibg=NONE
+  highlight! SpecialComment term=NONE cterm=NONE gui=NONE ctermfg=249 ctermbg=NONE guifg=#B0B8BA guibg=NONE
+endfunction
+augroup molokai_readable_comments
+  autocmd!
+  autocmd ColorScheme molokai call s:MolokaiReadableComments()
+  autocmd VimEnter * call s:MolokaiReadableComments()
+augroup END
+
 " Vim UI
 "--------
 " color scheme
 set background=dark
+" Bring 256-color molokai closer to the GUI palette (including comments).
+let g:rehash256 = 1
+" Use true RGB so comment guifg is what the terminal draws (iTerm2 + tmux).
+if has('termguicolors')
+  let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+  let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+  set termguicolors
+endif
 " molokai is installed by Vundle; skip silently until :PluginInstall has run
 silent! colorscheme molokai
 " colorscheme blue
+call s:MolokaiReadableComments()
 
 " highlight current line
 au WinLeave * set nocursorline nocursorcolumn
