@@ -157,5 +157,5 @@ alias 'cd..'='cd_up'
 
 export PATH=/home/osolovey/w/r/training-platform-ebr/.venv/bin:/home/osolovey/.nvm/versions/node/v18.12.1/bin:/home/osolovey/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/usr/local/cuda-12.9/bin
 export PATH=/root/.grok/bin:$PATH
-export PATH=/root/.cargo/bin:$PATH
+export PATH="$HOME/.local/bin:$HOME/.cargo/bin:$PATH"
 export LD_LIBRARY_PATH=:/usr/local/cuda-12.9/lib64

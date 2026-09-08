@@ -33,9 +33,12 @@ EOF
 git config --global credential.helper "store --file=$HOME/.git-credentials"
 #
 # dot
+# Let the Neovim installer back up the existing config before replacing it.
 git clone https://github.com/olegsolovey/dot.git && \
-rsync -a --exclude='.git' --exclude='.git-credentials' dot/ ~/ && \
-rm -rf dot && \
+rsync -a --exclude='.git' --exclude='.git-credentials' --exclude='.config/nvim' dot/ ~/ && \
+bash dot/.config/nvim/install.sh < /dev/null && \
+rm -rf dot || exit 1
+export PATH="${PREFIX:-$HOME/.local}/bin:$HOME/.cargo/bin:$PATH"
 #
 git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 ~/.tmux/plugins/tpm/bin/install_plugins
@@ -65,7 +68,7 @@ fi
 
 rm -rf ~/.rustup/downloads ~/.rustup/tmp
 rustup toolchain install 1.94.0
-rustup component add clippy rustfmt --toolchain 1.94.0
+rustup component add rust-analyzer rust-src clippy rustfmt --toolchain 1.94.0
 
 git clone git@github.com:xai-org/xai.git --single-branch --branch main --recursive ~/workspace/xai
 
