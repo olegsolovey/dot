@@ -1,0 +1,8 @@
+*.log
+.tests
+.repro
+data
+debug
+doc/tags
+foo.*
+tt.*
