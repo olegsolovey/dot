@@ -353,24 +353,31 @@ local ok_mason, merr = pcall(function()
   local registry = require("mason-registry")
   registry.refresh()
   local want = vim.split(vim.env.MASON_PACKAGES or "", " ", { trimempty = true })
-  -- Package:is_installed() only checks that the package directory exists, which is true
-  -- as soon as an install starts, so completion is tracked via the install callback.
   local pending, failed = 0, {}
   for _, name in ipairs(want) do
     local pkg = registry.get_package(name)
-    if pkg:is_installed() and vim.uv.fs_stat(vim.fn.stdpath("data") .. "/mason/bin/" .. name) then
+    local installing = pkg:is_installing()
+    if not installing and pkg:is_installed() and vim.uv.fs_stat(vim.fn.stdpath("data") .. "/mason/bin/" .. name) then
       print("mason: " .. name .. " present")
     else
-      print("mason: installing " .. name)
       pending = pending + 1
-      pkg:install({ force = true }, function(success, result)
+      local function complete(success, result)
         pending = pending - 1
         if success then
           print("mason: " .. name .. " installed")
         else
           failed[#failed + 1] = name .. " (" .. tostring(result) .. ")"
         end
-      end)
+      end
+      if installing then
+        print("mason: waiting for " .. name)
+        -- Automatic installs can already be running; handle closure precedes the final result.
+        pkg:once("install:success", function(result) complete(true, result) end)
+        pkg:once("install:failed", function(result) complete(false, result) end)
+      else
+        print("mason: installing " .. name)
+        pkg:install({ force = true }, complete)
+      end
     end
   end
   local done = vim.wait(30 * 60 * 1000, function() return pending == 0 end, 500)

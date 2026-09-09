@@ -4,6 +4,8 @@ This configuration is based on LazyVim and is set up for Python, Rust, C, C++, C
 
 ## Installation
 
+### Linux
+
 On Ubuntu 22, the repo's `ubuntu-22.sh -g <github-token>` runs this installer before the existing Vim setup. It installs Neovim, system dependencies, Python and Rust tools, buildifier, lazygit, the pinned plugins, Treesitter parsers, and Mason packages.
 
 To install only Neovim from a checkout:
@@ -31,6 +33,49 @@ bash .config/nvim/install.sh --pack > /tmp/nvim-install.sh
 ```
 
 An optional directory after `--pack` selects another config source. Write the output outside that source directory. Without an embedded archive, `install.sh` needs the adjacent config files; copying only the unpacked script is insufficient.
+
+If an older installer fails during Mason setup with `Package is already installing.`, rerun from a checkout containing the fix (or regenerate the packed installer). The bootstrap waits for packages already being installed by the configuration and reuses completed installations; there is no need to delete Neovim's data directory. Since system packages and Rust were set up before this stage, you can retry with:
+
+```bash
+bash .config/nvim/install.sh --skip-apt --skip-rust
+```
+
+### macOS
+
+Use the separate macOS installer on Apple Silicon (`arm64`) or Intel (`x86_64`):
+
+```bash
+# Complete Apple's installer if the Command Line Tools are not already installed.
+xcode-select --install
+# Install Homebrew from https://brew.sh if needed, then run from this checkout:
+bash .config/nvim/install-macos.sh
+```
+
+The installer runs without confirmation prompts, including Homebrew's default install approval. It disables interactive input for installation steps, pip prompts, and Git terminal credential prompts; rustup already runs with `-y`. No extra flag is needed, even when launched from a terminal. Failures stop the installer rather than waiting for approval.
+
+Homebrew and Xcode Command Line Tools must already be available. If either is missing, the installer exits with instructions instead of opening an installation dialog or asking for a password. Initial macOS administrator authorization and Xcode license acceptance cannot be bypassed by this script.
+
+Run it as your normal user, not with `sudo`. On Apple Silicon, use a native terminal with native Homebrew rather than mixing it with an Intel/Rosetta installation. The macOS release must be supported by both Homebrew and the requested Neovim binaries.
+
+Homebrew provides Git, CMake, Ninja, ripgrep, fd, Python 3.13, and LLVM. Neovim, tree-sitter, buildifier, and lazygit use macOS release binaries. Python language tools use a dedicated virtual environment, and Rust tools use rustup. LLVM's keg-only `clangd` is linked into the installer's binary directory without changing Apple's compiler. Plugins, Treesitter parsers, and Mason tools are bootstrapped headlessly.
+
+The defaults are `~/.local/bin/nvim`, `~/.config/nvim`, and `~/.local/share/nvim`. Existing config directories and symlinks are backed up to a unique `nvim.bak.*` sibling before replacement. The installed copy includes `install-macos.sh` for reruns; the macOS configuration archive excludes both installer scripts to avoid nesting packed installers. The repository's Linux installer, Vim setup, and other dotfiles are unchanged. Run this installer directly: the general `setup.sh` copies dotfiles without these Neovim backup safeguards.
+
+Options:
+
+- `--skip-brew`: skip Homebrew package installation when dependencies are already available. Homebrew itself is then optional.
+- `--skip-rust`, `--skip-headless`, and `--force-nvim`: behave as described for Linux.
+- `--pack [SRC_DIR]`: create a self-contained macOS installer without installing anything; packaging also works on Linux.
+
+The same version, `PREFIX`, and XDG environment overrides apply. The installer adds its binaries, Rust tools, and the detected Homebrew paths to `${ZDOTDIR:-$HOME}/.zshrc`. When `SHELL` selects Bash, it uses the first existing login file (`~/.bash_profile`, `~/.bash_login`, or `~/.profile`), creating `~/.bash_profile` if none exists. Open a new shell after installation. To create a portable copy:
+
+```bash
+bash .config/nvim/install-macos.sh --pack > /tmp/nvim-install-macos.sh
+# Copy it to another Mac, then run:
+bash /tmp/nvim-install-macos.sh
+```
+
+CUDA source editing remains available, but CUDA-GDB and GPU execution require a supported Linux environment. Bazel and project-specific test dependencies are not installed automatically.
 
 ## Start Neovim
 
