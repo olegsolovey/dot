@@ -352,12 +352,32 @@ ensure_path() {
 # ---------------------------------------------------------------------------
 # 6. headless bootstrap: plugins, Treesitter parsers, Mason packages
 # ---------------------------------------------------------------------------
+# A failed Mason install can leave bin/<pkg> linked after packages/<pkg> is gone.
+# mason-nvim-dap then installs codelldb without --force. Once the package
+# directory is promoted, that dangling link resolves and Mason errors with
+# "already linked". file_exists() follows symlinks, so --force does not remove
+# a dangling link either. Drop those links before Neovim starts.
+clear_stale_mason_bins() {
+  local bin_dir="$DATA_DIR/mason/bin" pkg_dir="$DATA_DIR/mason/packages" name link
+  [[ -d "$bin_dir" ]] || return 0
+  for name in "${MASON_PACKAGES[@]}"; do
+    link="$bin_dir/$name"
+    if [[ -L "$link" || -e "$link" ]]; then
+      if [[ ! -d "$pkg_dir/$name" || ! -e "$link" ]]; then
+        rm -f "$link"
+        warn "removed stale mason link $link"
+      fi
+    fi
+  done
+}
+
 bootstrap_headless() {
   if [[ $SKIP_HEADLESS -eq 1 ]]; then
     log "Skipping headless bootstrap (--skip-headless)"
     return
   fi
   local nvim="$BIN/nvim" lua="$WORK_DIR/bootstrap.lua"
+  clear_stale_mason_bins
   log "Restoring plugins from lazy-lock.json"
   "$nvim" --headless "+Lazy! restore" \
     "+lua if require('lazy.manage.checker').has_errors() then vim.cmd.cquit() end" +qa < /dev/null
@@ -407,41 +427,102 @@ local ok_mason, merr = pcall(function()
     error("timed out refreshing Mason registry")
   end
   local want = vim.split(vim.env.MASON_PACKAGES or "", " ", { trimempty = true })
-  local pending, failed = 0, {}
-  for _, name in ipairs(want) do
-    local pkg = registry.get_package(name)
-    local installing = pkg:is_installing()
-    if not installing and pkg:is_installed() and vim.uv.fs_stat(vim.fn.stdpath("data") .. "/mason/bin/" .. name) then
-      print("mason: " .. name .. " present")
-    else
-      pending = pending + 1
-      local function complete(success, result)
-        pending = pending - 1
-        if success then
-          print("mason: " .. name .. " installed")
-        else
-          failed[#failed + 1] = name .. " (" .. tostring(result) .. ")"
-        end
-      end
-      if installing then
-        print("mason: waiting for " .. name)
-        -- Automatic installs can already be running; handle closure precedes the final result.
-        pkg:once("install:success", function(result) complete(true, result) end)
-        pkg:once("install:failed", function(result) complete(false, result) end)
-      else
-        print("mason: installing " .. name)
-        pkg:install({ force = true }, complete)
-      end
+  local data = vim.fn.stdpath("data")
+
+  local function bin_path(name)
+    return data .. "/mason/bin/" .. name
+  end
+
+  local function bin_ready(name)
+    local st = vim.uv.fs_stat(bin_path(name))
+    return st ~= nil and st.type == "file"
+  end
+
+  -- lstat sees dangling symlinks. Mason's file_exists follows them and misses them.
+  local function drop_bin(name)
+    local path = bin_path(name)
+    if vim.uv.fs_lstat(path) then
+      vim.uv.fs_unlink(path)
+      print("mason: unlinked " .. path)
     end
   end
-  local done = vim.wait(30 * 60 * 1000, function() return pending == 0 end, 500)
-  if not done then error("timed out waiting for mason packages") end
-  if #failed > 0 then error("failed: " .. table.concat(failed, ", ")) end
+
+  local function wait_install(pkg)
+    if not pkg:is_installing() then
+      return
+    end
+    local finished = false
+    pkg:once("install:success", function() finished = true end)
+    pkg:once("install:failed", function() finished = true end)
+    local ok = vim.wait(30 * 60 * 1000, function()
+      return finished or not pkg:is_installing()
+    end, 200)
+    if not ok then
+      error("timed out waiting for " .. pkg.name)
+    end
+  end
+
+  local function force_install(pkg, name)
+    if pkg:is_installing() then
+      print("mason: waiting for " .. name)
+      wait_install(pkg)
+      if pkg:is_installed() and bin_ready(name) then
+        return true
+      end
+    end
+    drop_bin(name)
+    print("mason: installing " .. name)
+    local done, ierr = false, nil
+    local ok_start, start_err = pcall(function()
+      pkg:install({ force = true }, function(success, result)
+        done = true
+        if not success then
+          ierr = result
+        end
+      end)
+    end)
+    if not ok_start then
+      if not tostring(start_err):find("already installing", 1, true) then
+        error(name .. " (" .. tostring(start_err) .. ")")
+      end
+      print("mason: waiting for " .. name)
+      wait_install(pkg)
+      return pkg:is_installed() and bin_ready(name), start_err
+    end
+    if not vim.wait(30 * 60 * 1000, function() return done end, 200) then
+      error("timed out waiting for " .. name)
+    end
+    return pkg:is_installed() and bin_ready(name), ierr
+  end
+
+  for _, name in ipairs(want) do
+    local pkg = registry.get_package(name)
+    if pkg:is_installing() then
+      print("mason: waiting for " .. name)
+      wait_install(pkg)
+    end
+    if not pkg:is_installing() and pkg:is_installed() and bin_ready(name) then
+      print("mason: " .. name .. " present")
+    else
+      -- mason-nvim-dap installs codelldb without --force. A leftover bin link
+      -- then fails with "already linked" after the package directory is promoted.
+      local ok_pkg, ierr = force_install(pkg, name)
+      if not ok_pkg then
+        print("mason: retrying " .. name .. " after " .. tostring(ierr))
+        ok_pkg, ierr = force_install(pkg, name)
+      end
+      if not ok_pkg then
+        error("failed: " .. name .. " (" .. tostring(ierr) .. ")")
+      end
+      print("mason: " .. name .. " installed")
+    end
+  end
 end)
 if not ok_mason then fail("mason: " .. tostring(merr)) end
 LUA
 
   log "Installing Treesitter parsers and Mason packages"
+  clear_stale_mason_bins
   TS_FALLBACK_PARSERS="${TS_FALLBACK_PARSERS[*]}" MASON_PACKAGES="${MASON_PACKAGES[*]}" \
     NVIM_BOOTSTRAP_LUA="$lua" "$nvim" --headless -c 'lua dofile(vim.env.NVIM_BOOTSTRAP_LUA)' -c qa < /dev/null
   ok "plugins, parsers, Mason packages"

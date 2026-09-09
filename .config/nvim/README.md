@@ -6,7 +6,7 @@ This configuration is based on LazyVim and is set up for Python, Rust, C, C++, C
 
 ### Linux
 
-On Ubuntu 22, the repo's `ubuntu-22.sh -g <github-token>` runs this installer before the existing Vim setup. It installs Neovim, system dependencies, Python and Rust tools, buildifier, lazygit, the pinned plugins, Treesitter parsers, and Mason packages.
+On Ubuntu 22, the repo's `ubuntu-22.sh -g <github-token>` runs this installer before the existing Vim setup. It installs Neovim, system dependencies, Python and Rust tools, buildifier, lazygit, the pinned plugins, Treesitter parsers, and Mason packages. Official tree-sitter CLI binaries need glibc 2.39, so on Ubuntu 22.04 the installer builds `tree-sitter-cli` with cargo instead of downloading the release binary.
 
 To install only Neovim from a checkout:
 
@@ -34,7 +34,7 @@ bash .config/nvim/install.sh --pack > /tmp/nvim-install.sh
 
 An optional directory after `--pack` selects another config source. Write the output outside that source directory. Without an embedded archive, `install.sh` needs the adjacent config files; copying only the unpacked script is insufficient.
 
-If an older installer fails during Mason setup with `Package is already installing.`, rerun from a checkout containing the fix (or regenerate the packed installer). The bootstrap waits for packages already being installed by the configuration and reuses completed installations; there is no need to delete Neovim's data directory. Since system packages and Rust were set up before this stage, you can retry with:
+If an older installer fails during Mason setup with `Package is already installing.` or `is already linked.`, rerun from a checkout containing the fix (or regenerate the packed installer). The bootstrap waits for packages already being installed by the configuration, removes a leftover `mason/bin` link from a failed install, and reuses completed installations; there is no need to delete Neovim's data directory. Since system packages and Rust were set up before this stage, you can retry with:
 
 ```bash
 bash .config/nvim/install.sh --skip-apt --skip-rust
