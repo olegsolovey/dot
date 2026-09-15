@@ -14,6 +14,7 @@
 #   - Rust toolchain via rustup with rust-analyzer, rustfmt, clippy, rust-src
 #   - buildifier and lazygit from GitHub releases
 #   - the configuration into ~/.config/nvim (existing config is backed up)
+#     Neo-tree opens at the current working directory with Git-ignored files visible.
 #   - all plugins at the commits pinned in lazy-lock.json (headless `Lazy! restore`)
 #   - all Treesitter parsers and Mason packages (headless)
 #

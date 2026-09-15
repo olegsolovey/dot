@@ -8,6 +8,7 @@
 # Rust via rustup, the adjacent configuration, pinned plugins, and Mason tools.
 # Homebrew supplies git, cmake, ninja, ripgrep, fd, Python 3.13, and LLVM/clangd.
 # Existing configurations are backed up; Vim and other dotfiles are left alone.
+# Neo-tree opens at the current working directory with Git-ignored files visible.
 #
 # Usage:
 #   bash install-macos.sh [--skip-brew] [--skip-rust] [--skip-headless] [--force-nvim]

@@ -9,13 +9,13 @@ local function command(action)
     action = action,
     source = "filesystem",
     position = "left",
-    dir = active_root or LazyVim.root(),
+    dir = active_root or vim.fn.getcwd(),
   })
 end
 
 function M.show()
   enabled = true
-  active_root = LazyVim.root()
+  active_root = vim.fn.getcwd()
   command("show")
 end
 

@@ -25,7 +25,9 @@ Options:
 
 `NVIM_VERSION`, `TREE_SITTER_VERSION`, `BUILDIFIER_VERSION`, and `LAZYGIT_VERSION` override release versions. `PREFIX` overrides `~/.local`; `XDG_CONFIG_HOME` and `XDG_DATA_HOME` override the config and data roots. The installer adds its binaries to `~/.bashrc`; open a new shell after installation.
 
-The Lua files and `lazy-lock.json` in this directory are the configuration source. To create a portable single-file installer, run this from a checkout on Linux or macOS:
+Both installers use the Lua files and `lazy-lock.json` in this directory as their configuration source. Neo-tree opens in the current working directory and leaves Git-ignored files visible to avoid a blocking repository-wide scan before the first render. Git status updates remain asynchronous and are scoped to the displayed directory.
+
+To create a portable single-file installer, run this from a checkout on Linux or macOS:
 
 ```bash
 bash .config/nvim/install.sh --pack > /tmp/nvim-install.sh
@@ -132,8 +134,9 @@ Run `:Tutor` for the built-in interactive Vim lesson.
 
 | Keys | Action |
 |---|---|
-| `Space e` | Toggle the project file tree |
-| `Space E` | Toggle the file tree at the current working directory |
+| `Space e` / `Space E` | Toggle the file tree at the current working directory across tabs |
+| `Space f e` | Toggle the file tree at the detected project root |
+| `Space f E` | Toggle and focus the file tree at the current working directory |
 | `Space f f` | Find files in the project |
 | `Space f r` | Open a recent file |
 | `Space s g` | Search text across the project |
