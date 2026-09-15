@@ -18,12 +18,14 @@ return {
       },
     },
     opts = {
+      git_status_scope_to_path = true,
       filesystem = {
         follow_current_file = { enabled = true },
         use_libuv_file_watcher = true,
         filtered_items = {
           hide_dotfiles = false,
-          hide_gitignored = true,
+          -- Hiding ignored files blocks the first render on a repository-wide scan.
+          hide_gitignored = false,
         },
         window = {
           mappings = {
