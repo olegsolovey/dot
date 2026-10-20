@@ -38,6 +38,6 @@ opt.fillchars:append({
   foldopen = "v",
   foldclose = ">",
 })
-opt.scrolloff = 6
+opt.scrolloff = 0
 opt.sidescrolloff = 8
 opt.wrap = false

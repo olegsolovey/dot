@@ -221,6 +221,7 @@ Configured formatters:
 - Python: Ruff import sorting followed by Ruff formatting.
 - Rust: rustfmt.
 - C, C++, and CUDA: clang-format 21, exposed through `PATH`.
+- Protobuf: clang-format 21, using the repository's `.clang-format` `Language: Proto` section.
 - CMake: cmake-format.
 - Bazel/Starlark: buildifier.
 
@@ -339,6 +340,18 @@ Other task shortcuts:
 | `Space o t` | Act on the selected task |
 
 For clangd in a Bazel C/C++ project, generate or export a `compile_commands.json` using the repository's Bazel tooling. Clangd cannot infer full include paths and defines from BUILD files alone.
+
+## Protobuf
+
+`.proto` files use the `buf lsp serve` language server from Mason's `buf`, called by absolute path because an older `buf` without `lsp` may come first on `PATH`. It provides go-to-definition across files, references, and buf diagnostics.
+
+Imports resolve from the nearest `buf.yaml`. A proto directory whose imports are relative to itself needs its own `buf.yaml`; otherwise go-to-definition returns nothing:
+
+```yaml
+version: v2
+modules:
+  - path: .
+```
 
 ## CUDA
 

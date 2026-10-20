@@ -76,7 +76,7 @@ PY_PACKAGES=(
 PY_BINS=(basedpyright basedpyright-langserver ruff debugpy debugpy-adapter cmake-format cmake-lint clang-format)
 
 # Mason packages the config expects (everything else is `mason = false` and taken from PATH).
-MASON_PACKAGES=(codelldb lua-language-server neocmakelsp shfmt stylua)
+MASON_PACKAGES=(buf codelldb lua-language-server neocmakelsp shfmt stylua)
 
 # Fallback parser list if it cannot be read from the config at runtime.
 TS_FALLBACK_PARSERS=(bash c cmake cpp cuda diff html javascript jsdoc json jsonc lua luadoc luap markdown markdown_inline ninja printf python query regex ron rst rust starlark toml tsx typescript vim vimdoc xml yaml)
