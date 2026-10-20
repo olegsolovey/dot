@@ -71,7 +71,7 @@ PY_PACKAGES=(
   "clang-format==21.1.2"
 )
 PY_BINS=(basedpyright basedpyright-langserver ruff debugpy debugpy-adapter cmake-format cmake-lint clang-format)
-MASON_PACKAGES=(codelldb lua-language-server neocmakelsp shfmt stylua)
+MASON_PACKAGES=(buf codelldb lua-language-server neocmakelsp shfmt stylua)
 TS_FALLBACK_PARSERS=(bash c cmake cpp cuda diff html javascript jsdoc json jsonc lua luadoc luap markdown markdown_inline ninja printf python query regex ron rst rust starlark toml tsx typescript vim vimdoc xml yaml)
 
 SKIP_BREW=0 SKIP_RUST=0 SKIP_HEADLESS=0 FORCE_NVIM=0

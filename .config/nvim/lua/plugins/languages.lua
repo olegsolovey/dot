@@ -51,6 +51,11 @@ return {
           },
           filetypes = { "c", "cpp", "objc", "objcpp", "cuda" },
         },
+        -- Mason's buf: ~/xai/bin/buf (1.56) is earlier on PATH and lacks `buf lsp`.
+        buf_ls = {
+          mason = false,
+          cmd = { vim.fn.stdpath("data") .. "/mason/bin/buf", "lsp", "serve", "--log-format=text" },
+        },
       },
     },
   },
@@ -112,6 +117,7 @@ return {
         c = { "clang-format" },
         cpp = { "clang-format" },
         cuda = { "clang-format" },
+        proto = { "clang-format" },
         cmake = { "cmake_format" },
         bzl = { "buildifier" },
       },
