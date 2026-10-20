@@ -126,6 +126,8 @@ return {
         buildifier = { command = "buildifier" },
         ruff_format = { command = "ruff" },
         ruff_organize_imports = { command = "ruff" },
+        -- Any formatting flag makes shfmt ignore .editorconfig, so this wins everywhere.
+        shfmt = { prepend_args = { "-i", "2" } },
       },
     },
   },
