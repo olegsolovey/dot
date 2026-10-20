@@ -199,6 +199,8 @@ return {
     "folke/noice.nvim",
     opts = {
       cmdline = { enabled = false },
+      -- noice messages force ext_cmdline on; with cmdline disabled, typed commands are invisible
+      messages = { enabled = false },
       popupmenu = { enabled = false },
       presets = {
         bottom_search = false,
