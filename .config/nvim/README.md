@@ -355,7 +355,7 @@ modules:
 
 ## Markdown
 
-Markdown buffers render in place: tables get borders and aligned columns, headings get background bars, and code blocks get frames. The line under the cursor shows raw text in insert mode. The `marksman` language server provides heading and link navigation.
+Markdown buffers render in place: tables get borders and aligned columns, headings get background bars, and code blocks get frames. The line under the cursor shows raw text in insert mode. No markdown language server runs: `marksman` indexes every markdown file under the repository root and makes Neovim unusable in a monorepo.
 
 | Keys | Action |
 |---|---|
