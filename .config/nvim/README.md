@@ -353,6 +353,17 @@ modules:
   - path: .
 ```
 
+## Markdown
+
+Markdown buffers render in place: tables get borders and aligned columns, headings get background bars, and code blocks get frames. The line under the cursor shows raw text in insert mode. The `marksman` language server provides heading and link navigation.
+
+| Keys | Action |
+|---|---|
+| `Space u m` | Toggle in-buffer rendering |
+| `Space c p` | Toggle a live browser preview |
+
+Table borders use box-drawing glyphs, so the terminal font needs them (any Nerd Font works). The browser preview needs a browser on the same machine; over SSH, use the in-buffer rendering. Markdown linting and formatting are off because their tools need npm.
+
 ## CUDA
 
 CUDA files (`.cu` and `.cuh`) are detected automatically. They use the CUDA Treesitter parser, clangd, clang-format, CMake/Bazel tasks, CodeLLDB for host code, and CUDA-GDB for device debugging.
