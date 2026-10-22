@@ -2,8 +2,20 @@
 -- (render-markdown.nvim, toggle with <leader>um) and previews in a browser
 -- (markdown-preview.nvim, <leader>cp). Its markdownlint-cli2, markdown-toc and
 -- prettier tools need npm, which the install scripts do not provide, so they are
--- dropped here; marksman is a standalone binary and stays.
+-- dropped here.
 return {
+  {
+    "neovim/nvim-lspconfig",
+    opts = {
+      servers = {
+        -- marksman roots at .git and indexes every markdown file below it, then
+        -- publishes diagnostics for all of them. In a monorepo with tens of
+        -- thousands of markdown files that pins a CPU core and grows Neovim to
+        -- gigabytes, so it stays off.
+        marksman = { enabled = false },
+      },
+    },
+  },
   {
     "mason-org/mason.nvim",
     opts = function(_, opts)
